@@ -1,0 +1,28 @@
+{
+    "id": "/web", 
+    "container": {
+        "type": "DOCKER",
+ 	"docker": {
+    		"image": "lawouach/cherrypy-docker-hello-world",
+    		"network": "BRIDGE",
+    		"portMappings": [
+      			{
+        			"containerPort": 8080,
+        			"hostPort": 0,
+        			"servicePort": 0,
+        			"protocol": "tcp"
+      			}
+    		],
+    		"parameters": [
+      			{
+        			"key": "hostname",
+        			"value": "web.service.consul"
+      			}
+    		]
+  	}
+    },
+    "args": [],
+    "cpus": 0.3,
+    "mem": 128.0,
+    "instances": 1
+}
