@@ -6,20 +6,20 @@ err() {
 
 
 register_instance_to_router() {
-    local svcid
+    local instid
     local svcname
     local hostaddr
     local hostport
     local domain
 
-    svcid="$1"
+    instid="$1"
     svcname="$2"
     hostaddr="$3"
     hostport=$4
     domain=${5:-service.consul}
     
-    if [[ ! $svcid ]]; then
-        err "missing required argument: service id"
+    if [[ ! $instid ]]; then
+        err "missing required argument: instance id"
         return 1
     fi
     
@@ -43,14 +43,14 @@ register_instance_to_router() {
 
     curl -X POST \
          -H 'Content-Type: application/json' \
-         -d '{ "Server": { "Id": "'$svcid'", "URL": "http://'$hostaddr':'$hostport'" } }' \
+         -d '{ "Server": { "Id": "'$instid'", "URL": "http://'$hostaddr':'$hostport'" } }' \
          $routerurl/backends/$svcname/servers
 }
 
 
 main() {
     local svcname
-    local svcid
+    local instid
     local hostaddr
     local hostport
     local domain
@@ -59,8 +59,8 @@ main() {
     for i in "$@"
     do
         case $i in
-            --service-id=*)
-                svcid="${i#*=}"
+            --instance-id=*)
+                instid="${i#*=}"
                 shift
                 ;;
             --service-name=*)
@@ -80,7 +80,7 @@ main() {
                 shift
                 ;;
             --help)
-                echo "./register-instance.sh --service-id=SVCID --service-name=SVCNAME --host-address=SVCHOSTADDR --host-port=SVCHOSTPORT"
+                echo "./register-instance.sh --instance-id=INSTID --service-name=SVCNAME --host-address=SVCHOSTADDR --host-port=SVCHOSTPORT"
                 exit 0
                 ;;
             *)
@@ -88,7 +88,7 @@ main() {
         esac
     done
 
-    register_instance_to_router $svcid $svcname $hostaddr $hostport $domain
+    register_instance_to_router $instid $svcname $hostaddr $hostport $domain
 }
 
 main "$@"
