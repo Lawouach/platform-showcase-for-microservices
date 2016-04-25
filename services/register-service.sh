@@ -74,7 +74,7 @@ register_to_router() {
     
     curl -X POST \
          -H 'Content-Type: application/json' \
-         -d '{ "Frontend": { "Id": "'$svcname'", "Route": "Path(`/`)", "Type": "http", "BackendId": "'$svcname'", "Settings": { "Hostname": "'$svcdomain'" } } }' \
+         -d '{ "Frontend": { "Id": "'$svcname'", "Route": "Host(\"'$svcdomain'\") && PathRegexp(\"/.*\")", "Type": "http", "BackendId": "'$svcname'", "Settings": { "Hostname": "'$svcdomain'" } } }' \
          $routerurl/frontends
     
     curl -X POST \
