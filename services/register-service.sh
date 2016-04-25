@@ -114,7 +114,7 @@ register_to_gateway() {
 
     curl -i -X POST \
          --url $gwurl \
-         -d 'name=web' \
+         -d 'name='$svcname \
          -d 'upstream_url=http://vulcand.'$domain':'$svcport \
          -d 'request_host='$svcdomain \
          -d 'preserve_host=true'

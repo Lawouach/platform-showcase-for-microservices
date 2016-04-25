@@ -6,16 +6,16 @@ err() {
 
 
 deregister_instance_from_router() {
-    local svcid
+    local instid
     local svcname
     local domain
 
-    svcid="$1"
+    instid="$1"
     svcname="$2"
-    domain="$3"
+    domain="${3:-service.consul}"
 
-    if [[ ! $svcid ]]; then
-        err "missing required argument: service id"
+    if [[ ! $instid ]]; then
+        err "missing required argument: instance id"
         return 1
     fi
     
@@ -27,12 +27,12 @@ deregister_instance_from_router() {
     local routerurl
     routerurl="http://consul.$domain:8182/v2"
 
-    curl -X DELETE $routerurl/backends/$svcname/servers/$svcid
+    curl -X DELETE $routerurl/backends/$svcname/servers/$instid
 }
 
 
 main() {
-    local svcid
+    local instid
     local svcname
     local domain
     
@@ -40,8 +40,8 @@ main() {
     for i in "$@"
     do
         case $i in
-            --service-id=*)
-                svcid="${i#*=}"
+            --instance-id=*)
+                instid="${i#*=}"
                 shift
                 ;;
             --service-name=*)
@@ -53,14 +53,15 @@ main() {
                 shift
                 ;;
             --help)
-                echo "./deregister-instance.sh --service-id=SVCID --service-name=SVCNAME"
+                echo "./deregister-instance.sh --instance-id=INSTID --service-name=SVCNAME"
                 exit 0
+                ;;
             *)
                 ;;
         esac
     done
 
-    deregister_instance_from_router $svcid $svcname $domain
+    deregister_instance_from_router $instid $svcname $domain
 }
 
 main "$@"

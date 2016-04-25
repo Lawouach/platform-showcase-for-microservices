@@ -10,7 +10,7 @@ deregister_from_discovery_service() {
     local domain
 
     svcname="$1"
-    domain="$2"
+    domain="${2:-service.consul}"
 
     if [[ ! $svcname ]]; then
         err "missing required argument: service name"
@@ -29,7 +29,7 @@ deregister_from_router() {
     local domain
 
     svcname="$1"
-    domain="{$2:-service.consul}"
+    domain="${2:-service.consul}"
 
     if [[ ! $svcname ]]; then
         err "missing required argument: service name"
@@ -42,7 +42,7 @@ deregister_from_router() {
     curl -X DELETE $routerurl/listeners/$svcname
     curl -X DELETE $routerurl/frontends/$svcname
     curl -X DELETE $routerurl/backends/$svcname
-    curl -X DELETE $routerurl/hosts/$svcname
+    curl -X DELETE $routerurl/hosts/$svcname.$domain
 }
 
 
@@ -51,7 +51,7 @@ deregister_from_gateway() {
     local domain
     
     svcname="$1"
-    domain="{$3:-service.consul}"
+    domain="${2:-service.consul}"
 
     if [[ ! $svcname ]]; then
         err "missing required argument: service name"
