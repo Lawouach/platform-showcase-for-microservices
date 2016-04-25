@@ -20,8 +20,8 @@ sudo systemctl enable cassandra
 
 # Now we can install kong
 #sudo yum install -y epel-release
-wget -q -O kong-0.7.0.el7.noarch.rpm https://downloadkong.org/el7.noarch.rpm
-sudo yum install -y -q kong-0.7.0.el7.noarch.rpm --nogpgcheck
+wget -q -O kong-0.8.0.el7.noarch.rpm https://downloadkong.org/el7.noarch.rpm
+sudo yum install -y -q kong-0.8.0.el7.noarch.rpm --nogpgcheck
 
 # to get it working properly with systemd, we can't
 # let nginx start in the background
